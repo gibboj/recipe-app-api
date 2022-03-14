@@ -1,4 +1,4 @@
-FROM python:3.8.10-alpine
+FROM python:3.7-alpine
 LABEL maintainer="kendra.gibbons@travelperk.com"
 
 ENV PYTHONUNBUFFERED 1
