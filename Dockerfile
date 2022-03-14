@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.7
 LABEL maintainer="kendra.gibbons@travelperk.com"
 
 ENV PYTHONUNBUFFERED 1
@@ -17,7 +17,7 @@ WORKDIR /app
 COPY ./app /app
 # copy local code into docker image
 
-RUN adduser -D user
+RUN adduser --disabled-password user
 # make new user, that's only for running applications
 # this is for security, we don't want to run as root
 USER user
