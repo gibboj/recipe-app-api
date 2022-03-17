@@ -63,3 +63,29 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Recipe(models.Model):
+    """Recipe model"""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    )
+    title = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    time_minutes = models.IntegerField()
+    link = models.CharField(max_length=255, blank=True)
+    # Not recommended to allow null status, making it optional as
+    # "blank = true" it sets it to a blank string, easier to make comparisons
+    ingredients = models.ManyToManyField(
+        "Ingredient"
+    )  # could also pass the class,
+    # but that requires maintaining the order, bc it has to be declared after
+
+    # many to many field is how we set up the foreign key.
+    # Many ingredients can be associated with many recipes
+
+    tags = models.ManyToManyField("Tag")
+
+    def __str__(self):
+        return self.title
