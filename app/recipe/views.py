@@ -58,3 +58,7 @@ class RecipeViewSet(
     def get_queryset(self):
         """Return the receipes of the authenticated user"""
         return self.queryset.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        """Create a new recipe"""
+        return serializer.save(user=self.request.user)
