@@ -7,10 +7,13 @@ ENV PYTHONUNBUFFERED 1
 COPY ./requirements.txt /requirements.txt
 # copy file onto image
 
-RUN apk add --update --no-cache postgresql-client
+RUN apk add --update --no-cache postgresql-client jpeg-dev
 
+#permenent dependencies
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
-    gcc libc-dev linux-headers postgresql-dev
+    gcc libc-dev linux-headers postgresql-dev musl-dev zlib zlib-dev
+
+#temporary dependencies, only used for installing the pip packages
 
 RUN pip install -r /requirements.txt
 # install predefined requirements
@@ -24,7 +27,15 @@ WORKDIR /app
 COPY ./app /app
 # copy local code into docker image
 
+RUN mkdir -p /vol/web/media
+RUN mkdir -p /vol/web/static
+
 RUN adduser -D user
+
 # make new user, that's only for running applications
 # this is for security, we don't want to run as root
+RUN chown -R user:user /vol/
+# give the user access to the folder & subfolders
+RUN chmod -R 755 /vol/web
+# give user full rwx perms
 USER user
